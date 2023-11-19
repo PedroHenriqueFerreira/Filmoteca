@@ -10,8 +10,8 @@ import {
   RiHeart3Line,
   RiHomeFill,
   RiHomeLine,
-  RiQuestionAnswerFill,
-  RiQuestionAnswerLine,
+  RiVipCrown2Fill,
+  RiVipCrown2Line,
 } from 'react-icons/ri';
 
 const Header = () => {
@@ -53,8 +53,8 @@ const Header = () => {
           <li>
             <ButtonLink to="/q&a" className="text">
               <div>
-                <RiQuestionAnswerLine className="line" />
-                <RiQuestionAnswerFill className="fill" />
+                <RiVipCrown2Line className="line" />
+                <RiVipCrown2Fill className="fill" />
               </div>
               <span>Torne-se Cult</span>
             </ButtonLink>

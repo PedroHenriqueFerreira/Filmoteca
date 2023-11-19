@@ -66,6 +66,9 @@ export const themeConfig = {
   shadow: {
     blur: '0.32rem', // 5px
   },
+  background: {
+    blur: '0.64rem', // 10px
+  },
 };
 
 export const darkTheme = {

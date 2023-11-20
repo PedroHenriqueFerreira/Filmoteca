@@ -7,13 +7,13 @@ export const HomeContainer = styled.section`
   align-items: center;
 
   width: 100%;
-  backdrop-filter: blur(${themeConfig.shadow.blur});
 
   .cover {
     position: fixed;
     width: 100%;
     top: 0;
-    height: calc(100vh - ${themeConfig.header.topHeight});
+    height: 100%;
+    min-height: calc(100vh - ${themeConfig.header.topHeight});
     backdrop-filter: blur(${themeConfig.background.blur});
     z-index: -1;
   }

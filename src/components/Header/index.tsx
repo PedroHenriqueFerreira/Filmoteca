@@ -1,7 +1,8 @@
 import React from 'react';
-import LogoImage from '../../assets/LogoImage';
 import { HeaderContainer } from './style';
 import { ButtonLink } from '../Button';
+
+import logo from '../../assets/logo.png';
 
 import {
   RiMovie2Fill,
@@ -19,7 +20,7 @@ const Header = () => {
     <HeaderContainer>
       <nav>
         <ButtonLink to="/" className="logo text">
-          <LogoImage />
+          <img src={logo} />
         </ButtonLink>
 
         <ul className="routes">

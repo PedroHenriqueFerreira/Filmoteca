@@ -118,6 +118,11 @@ export const ButtonContainer = styled.button`
     border-style: ${themeConfig.border.type};
     border-color: ${({ theme }) => theme.primaryColor};
     color: ${({ theme }) => theme.primaryColor};
+
+    &.danger {
+      border-color: ${({ theme }) => theme.errorColor};
+      color: ${({ theme }) => theme.errorColor};
+    }
   }
 
   &.icon {

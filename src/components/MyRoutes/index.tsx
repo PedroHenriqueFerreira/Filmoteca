@@ -10,6 +10,7 @@ import Movie from '../../pages/Movie';
 import Search from '../../pages/Search';
 import Profile from '../../pages/Profile';
 import AddMovie from '../../pages/AddMovie';
+import Cult from '../../pages/Cult';
 
 const MyRoutes = (): JSX.Element => {
   return (
@@ -23,6 +24,7 @@ const MyRoutes = (): JSX.Element => {
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/movie/add" element={<AddMovie />} />
+        <Route path="/cult" element={<Cult />} />
         <Route path="*" element={<></>} />
       </Routes>
     </RouteContainer>

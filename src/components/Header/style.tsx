@@ -39,14 +39,14 @@ export const HeaderContainer = styled.header`
         background-color: transparent;
       }
 
-      :hover svg,
-      :focus-visible svg {
+      :hover img,
+      :focus-visible img {
         filter: drop-shadow(
           0 0 ${themeConfig.shadow.blur} ${({ theme }) => theme.shadowColor}
         );
       }
 
-      svg {
+      img {
         transition: ${themeConfig.transition};
         width: ${themeConfig.image.small};
         height: fit-content;

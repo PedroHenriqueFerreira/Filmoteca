@@ -5,6 +5,7 @@ import MyRoutes from './components/MyRoutes';
 import { GlobalStyle } from './styles/globalStyle';
 import { darkTheme } from './styles/theme';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <MyRoutes />
+        <Footer />
         <GlobalStyle />
       </BrowserRouter>
     </ThemeProvider>

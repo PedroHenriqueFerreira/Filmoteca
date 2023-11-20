@@ -8,7 +8,7 @@ export const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  /* height: ${themeConfig.header.topHeight}; */
+  height: ${themeConfig.header.topHeight};
   z-index: 1;
 
   + main {

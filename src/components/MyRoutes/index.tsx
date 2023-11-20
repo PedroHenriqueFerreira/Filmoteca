@@ -5,6 +5,11 @@ import { RouteContainer } from './style';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import Home from '../../pages/Home';
+import Movies from '../../pages/Movies';
+import Movie from '../../pages/Movie';
+import Search from '../../pages/Search';
+import Profile from '../../pages/Profile';
+import AddMovie from '../../pages/AddMovie';
 
 const MyRoutes = (): JSX.Element => {
   return (
@@ -13,6 +18,11 @@ const MyRoutes = (): JSX.Element => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/movie/:id" element={<Movie />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/movie/add" element={<AddMovie />} />
         <Route path="*" element={<></>} />
       </Routes>
     </RouteContainer>

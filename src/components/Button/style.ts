@@ -86,6 +86,10 @@ export const ButtonContainer = styled.button`
     margin-bottom: ${themeConfig.spacing.extraSmall};
   }
 
+  &.danger {
+    background-color: ${({ theme }) => theme.errorColor};
+  }
+
   &.text {
     background-color: transparent;
     color: ${({ theme }) => theme.primaryColor};

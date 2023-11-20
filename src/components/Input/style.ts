@@ -22,6 +22,11 @@ export const InputContainer = styled.div`
     &.error {
       color: ${({ theme }) => theme.errorColor};
     }
+
+    &:read-only {
+      cursor: not-allowed;
+      background-color: transparent;
+    }
   }
 
   select,

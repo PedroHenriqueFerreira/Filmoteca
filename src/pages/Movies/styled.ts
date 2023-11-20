@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { themeConfig } from '../../styles/theme';
 
-export const HomeContainer = styled.section`
+export const MoviesContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,6 +23,14 @@ export const HomeContainer = styled.section`
     padding: 0 ${themeConfig.spacing.extraLarge};
     width: 100%;
 
+    .add {
+      margin-bottom: ${themeConfig.spacing.extraLarge};
+    }
+
+    h1 {
+      text-align: left;
+    }
+
     @media ${themeConfig.device.tablet.medium} {
       padding-left: ${themeConfig.spacing.large};
       padding-right: ${themeConfig.spacing.large};
@@ -30,10 +38,6 @@ export const HomeContainer = styled.section`
 
     article {
       width: 100%;
-
-      h1 {
-        text-align: left;
-      }
 
       :not(:last-child) {
         margin-bottom: ${themeConfig.spacing.extraLarge};
@@ -47,10 +51,10 @@ export const HomeContainer = styled.section`
   }
 
   .movie {
+    display: block;
     cursor: pointer;
     position: relative;
     margin: 0 ${themeConfig.spacing.extremeSmall};
-    display: block;
 
     img {
       transition: ${themeConfig.transition};

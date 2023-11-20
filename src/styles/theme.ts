@@ -67,7 +67,7 @@ export const themeConfig = {
     blur: '0.32rem', // 5px
   },
   background: {
-    blur: '0.64rem', // 10px
+    blur: '1rem', // 16px
   },
 };
 

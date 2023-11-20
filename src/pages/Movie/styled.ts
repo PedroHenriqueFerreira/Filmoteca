@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { themeConfig } from '../../styles/theme';
 
-export const HomeContainer = styled.section`
+export const MovieContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;

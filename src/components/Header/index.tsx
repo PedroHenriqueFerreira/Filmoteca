@@ -6,8 +6,8 @@ import { ButtonLink } from '../Button';
 import {
   RiMovie2Fill,
   RiMovie2Line,
-  RiHeart3Fill,
-  RiHeart3Line,
+  RiSearch2Fill,
+  RiSearch2Line,
   RiHomeFill,
   RiHomeLine,
   RiVipCrown2Fill,
@@ -33,7 +33,7 @@ const Header = () => {
             </ButtonLink>
           </li>
           <li>
-            <ButtonLink to="/contents" className="text">
+            <ButtonLink to="/movies" className="text">
               <div>
                 <RiMovie2Line className="line" />
                 <RiMovie2Fill className="fill" />
@@ -42,21 +42,21 @@ const Header = () => {
             </ButtonLink>
           </li>
           <li>
-            <ButtonLink to="/books" className="text">
+            <ButtonLink to="/search" className="text">
               <div>
-                <RiHeart3Line className="line" />
-                <RiHeart3Fill className="fill" />
+                <RiSearch2Line className="line" />
+                <RiSearch2Fill className="fill" />
               </div>
-              <span>Favoritos</span>
+              <span>Pesquisar</span>
             </ButtonLink>
           </li>
           <li>
-            <ButtonLink to="/q&a" className="text">
+            <ButtonLink to="/cult" className="text">
               <div>
                 <RiVipCrown2Line className="line" />
                 <RiVipCrown2Fill className="fill" />
               </div>
-              <span>Torne-se Cult</span>
+              <span>Plano Cult</span>
             </ButtonLink>
           </li>
         </ul>
@@ -68,7 +68,7 @@ const Header = () => {
             </li>
             <li>
               <ButtonLink to="/register" className="text">
-                Criar conta
+                Cadastrar
               </ButtonLink>
             </li>
           </ul>

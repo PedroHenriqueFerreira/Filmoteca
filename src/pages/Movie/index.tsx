@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { MovieContainer } from './styled';
 
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData, useParams } from 'react-router-dom';
 
 import Title from '../../components/common/Title';
 import Paragraph from '../../components/common/Paragraph';
@@ -13,108 +13,232 @@ import {
   RiEyeLine,
   RiHeart2Fill,
   RiHeart2Line,
+  RiAccountCircleFill,
 } from 'react-icons/ri';
 import { Input } from '../../components/Input';
+import axios from '../../services/axios';
+import { get } from 'lodash';
+import { toast } from 'react-toastify';
 
-const Movie = () => {
+interface Props {
+  isLogged: boolean;
+  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface Comentario {
+  id: number;
+  texto: string;
+  usuario_id: number;
+  created_at: string;
+
+  Usuario: {
+    apelido: string;
+  };
+}
+
+const Movie = ({ isLogged, setIsLogged }: Props) => {
+  const { id } = useParams();
+
+  const [assistido, setAssistido] = useState(false);
+  const [favorito, setFavorito] = useState(false);
+
+  const [name, setName] = useState('');
+  const [year, setYear] = useState('');
+  const [genre, setGenre] = useState('');
+  const [synopsis, setSynopsis] = useState('');
+  const [rating, setRating] = useState('');
+  const [poster, setPoster] = useState('');
+
+  const [comments, setComments] = useState<Comentario[]>([]);
+
+  const [comment, setComment] = useState('');
+
+  const loadData = async () => {
+    try {
+      const result = await axios.get(`/filme/${id}`);
+
+      const data = get(result, 'data', {});
+
+      setName(data['filme']['titulo']);
+      setYear(data['filme']['ano']);
+      setGenre(data['filme']['genero']);
+      setSynopsis(data['filme']['sinopse']);
+      setRating(data['filme']['avaliacao']);
+      setPoster(data['filme']['poster']);
+
+      setComments(data['filme']['Comentarios']);
+
+      if (isLogged) {
+        const result2 = await axios.get('/usuario/perfil');
+
+        const data2 = get(result2, 'data', {});
+
+        const usuarioId = data2['id'];
+
+        const assistidos = data['filme']['Assistes'];
+        const favoritos = data['filme']['Favorita'];
+
+        setAssistido(
+          assistidos
+            .map((i: Record<string, number>) => i['usuario_id'])
+            .includes(usuarioId),
+        );
+
+        setFavorito(
+          favoritos
+            .map((i: Record<string, number>) => i['usuario_id'])
+            .includes(usuarioId),
+        );
+      }
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error: string) => toast.error(error));
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleAssistido = async () => {
+    try {
+      const result = await axios.post(`/filme/assistir/${id}`);
+
+      const data = get(result, 'data', {});
+
+      setAssistido(!assistido);
+
+      toast.success(data['message']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error: string) => toast.error(error));
+    }
+  };
+
+  const handleFavorito = async () => {
+    try {
+      const result = await axios.post(`/filme/favoritar/${id}`);
+
+      const data = get(result, 'data', {});
+
+      setFavorito(!favorito);
+
+      toast.success(data['message']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error: string) => toast.error(error));
+    }
+  };
+
+  const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const result = await axios.post(`/filme/comentar/${id}`, {
+        texto: comment,
+      });
+
+      const data = get(result, 'data', {});
+
+      toast.success(data['message']);
+
+      setComment('');
+
+      loadData();
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error: string) => toast.error(error));
+    }
+  };
+
   return (
     <MovieContainer>
       <span className="cover"></span>
       <div className="content">
         <div className="title">
-          <Title>Barbie</Title>
+          <Title>{name}</Title>
 
           <div className="options">
-            <Button className="text">
-              <div>
-                <RiHeart2Line />
-                <RiHeart2Fill />
-              </div>
-            </Button>
-            <Button className="text">
-              <div>
-                <RiEyeLine />
-                <RiEyeFill />
-              </div>
-            </Button>
+            {isLogged && (
+              <>
+                <Button
+                  className={`text ${favorito ? 'active' : ''}`}
+                  onClick={handleFavorito}
+                >
+                  <div>
+                    <RiHeart2Line />
+                    <RiHeart2Fill />
+                  </div>
+                </Button>
+                <Button
+                  className={`text ${assistido ? 'active' : ''}`}
+                  onClick={handleAssistido}
+                >
+                  <div>
+                    <RiEyeLine />
+                    <RiEyeFill />
+                  </div>
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
         <div className="movie">
-          <img
-            src="https://www.themoviedb.org/t/p/w220_and_h330_face/9Jmd1OumCjaXDkpllbSGi2EpJvl.jpg"
-            alt="Barbie"
-          />
+          <img src={poster} alt={name} />
 
           <Paragraph className="data">
             <div className="line">
-              <strong>Nome: </strong> <span>Barbie</span>
+              <strong>Nome: </strong> <span>{name}</span>
             </div>
             <div className="line">
-              <strong>Ano de lançamento: </strong> <span>2023</span>
+              <strong>Ano de lançamento: </strong> <span>{year}</span>
             </div>
             <div className="line">
-              <strong>Genero: </strong> <span>Aventura</span>
+              <strong>Genero: </strong> <span>{genre}</span>
             </div>
             <div className="line">
               <strong>Sinopse: </strong>
-
-              <span>
-                Na Barbielândia - o mundo mágico das Barbies - todas as versões
-                da boneca vivem em completa harmonia e suas únicas preocupações
-                são encontrar as melhores roupas para passear com as amigas e
-                curtir intermináveis festas. Porém, a Barbie Estereotipada
-                (Margot Robbie) começa a perceber que talvez sua vida não seja
-                tão perfeita assim, questionando-se sobre o sentido de sua
-                existência e alarmando suas companheiras. Logo, sua vida no
-                mundo cor-de-rosa começa a mudar e, eventualmente, ela vai parar
-                no mundo real.Forçada a viver ali, Barbie precisa lutar com as
-                dificuldades de não ser mais apenas uma boneca. Pelo menos, a
-                moça está acompanhada de seu fiel e amado Ken (Ryan Gosling),
-                que, ao contrário dela, parece cada vez mais fascinado pela vida
-                no novo mundo.
-              </span>
+              <span>{synopsis}</span>
             </div>
 
             <div className="line">
-              <strong>Avaliação: </strong> <span>3.4</span>
+              <strong>Avaliação: </strong> <span>{rating} / 10</span>
             </div>
           </Paragraph>
         </div>
 
-        <Title>Comentários</Title>
+        {isLogged && (
+          <>
+            <Title>Comentários</Title>
 
-        <form>
-          <Input />
-          <Button>Comentar</Button>
-        </form>
+            <form onSubmit={handleComment}>
+              <Input value={comment} setValue={setComment} />
+              <Button type="submit">Comentar</Button>
+            </form>
 
-        <div className="comments">
-          <Paragraph className="comment">
-            <div className="row">
-              <span className="username">Sigma Mal Amado</span>
-              <span className="date">12 jul 2023</span>
+            <div className="comments">
+              {comments.map((comment) => (
+                <Paragraph className="comment" key={comment.id}>
+                  <div className="row">
+                    <span className="username">
+                      <RiAccountCircleFill /> {comment.Usuario.apelido}
+                    </span>
+                    <span className="date">
+                      {new Date(comment.created_at).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <span className="text">{comment.texto}</span>
+                </Paragraph>
+              ))}
             </div>
-
-            <span className="text">
-              Lixo, um dos piores fimes já feitos em toda historia, tenho
-              certeza que a diretora odeia homens, pura lacração e ideologia da
-              nova geração
-            </span>
-          </Paragraph>
-          <Paragraph className="comment">
-            <div className="row">
-              <span className="username">Sigma Mal Amado</span>
-              <span className="date">12 jul 2023</span>
-            </div>
-
-            <span className="text">
-              Lixo, um dos piores fimes já feitos em toda historia, tenho
-              certeza que a diretora odeia homens, pura lacração e ideologia da
-              nova geração
-            </span>
-          </Paragraph>
-        </div>
+          </>
+        )}
       </div>
     </MovieContainer>
   );

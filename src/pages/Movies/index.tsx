@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { MoviesContainer } from './styled';
 import { ButtonLink } from '../../components/Button';
@@ -8,8 +8,42 @@ import Title from '../../components/common/Title';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Link } from 'react-router-dom';
+import axios from '../../services/axios';
+import { get } from 'lodash';
+import { toast } from 'react-toastify';
+
+interface Movie {
+  id: number;
+  titulo: string;
+  poster: string;
+}
+
+interface Genero {
+  genero: string;
+  filmes: Movie[];
+}
 
 const Movies = () => {
+  const [generos, setGeneros] = useState<Genero[]>([]);
+
+  const loadData = async () => {
+    try {
+      const result = await axios.get('/filme/generos');
+
+      const data = get(result, 'data', []);
+
+      setGeneros(data['generos']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error) => toast.error(error));
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   const responsive = {
     desktop_medium: {
       breakpoint: { max: 2560, min: 1440 },
@@ -51,171 +85,28 @@ const Movies = () => {
 
       <div className="content">
         <Title>Adicione um filme</Title>
-
-        <ButtonLink className="add" to="/movie/add">
+        <ButtonLink className="add" to="/movies/add">
           Adicionar novo filme
         </ButtonLink>
 
-        <article>
-          <Title>Ação</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
-        <article>
-          <Title>Aventura</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+        {generos.map((genero) => (
+          <article key={genero.genero}>
+            <Title>{genero.genero}</Title>
 
-        <article>
-          <Title>Romance</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+            <Carousel responsive={responsive}>
+              {genero.filmes.map((filme) => (
+                <Link
+                  className="movie"
+                  to={`/movie/${filme.id}`}
+                  key={filme.id}
+                >
+                  <img src={filme.poster} />
+                  <h3>{filme.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        ))}
       </div>
     </MoviesContainer>
   );

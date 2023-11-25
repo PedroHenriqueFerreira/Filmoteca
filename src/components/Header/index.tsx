@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HeaderContainer } from './style';
 import { ButtonLink } from '../Button';
 
@@ -13,9 +13,41 @@ import {
   RiHomeLine,
   RiVipCrown2Fill,
   RiVipCrown2Line,
+  RiAccountCircleFill,
 } from 'react-icons/ri';
+import axios from '../../services/axios';
+import { get } from 'lodash';
 
-const Header = () => {
+interface Props {
+  isLogged: boolean;
+  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header = ({ isLogged, setIsLogged }: Props) => {
+  const [name, setName] = useState('');
+
+  const loadName = async () => {
+    const token = localStorage.getItem('token');
+
+    if (token === null) {
+      setName('');
+    }
+
+    try {
+      const result = await axios.get('/usuario/perfil');
+
+      const data = get(result, 'data', {});
+
+      setName(data['apelido']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+    }
+  };
+
+  useEffect(() => {
+    loadName();
+  }, [isLogged]);
+
   return (
     <HeaderContainer>
       <nav>
@@ -62,7 +94,16 @@ const Header = () => {
           </li>
         </ul>
         {/* eslint-disable-next-line no-constant-condition*/}
-        {1 ? (
+        {isLogged ? (
+          <ul>
+            <li>
+              <ButtonLink to="/profile" className="profile text">
+                <RiAccountCircleFill />
+                <span>{name}</span>
+              </ButtonLink>
+            </li>
+          </ul>
+        ) : (
           <ul>
             <li>
               <ButtonLink to="/login">Entrar</ButtonLink>
@@ -70,15 +111,6 @@ const Header = () => {
             <li>
               <ButtonLink to="/register" className="text">
                 Cadastrar
-              </ButtonLink>
-            </li>
-          </ul>
-        ) : (
-          <ul>
-            <li>
-              <ButtonLink to="/profile" className="profile text">
-                <img src="https://unsplash.it/300/300" alt="Profile" />
-                <span>Pedro H</span>
               </ButtonLink>
             </li>
           </ul>

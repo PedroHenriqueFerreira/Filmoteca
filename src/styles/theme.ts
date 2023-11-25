@@ -79,7 +79,6 @@ export const darkTheme = {
   primaryColor: '#3C80EC',
   inputBackgroundColor: '#1B1921',
   errorColor: '#C85772',
-  successColor: '#57c8c8',
   shadowColor: '#F9FAFB66',
   buttonHoverColor: '#55B9F311',
 };

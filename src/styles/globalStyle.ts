@@ -29,4 +29,33 @@ export const GlobalStyle = createGlobalStyle`
     background-position: center;
     background-attachment: fixed;
   }
+
+  .Toastify__toast {
+    background-color: ${({ theme }) => theme.bodyColor};
+    border-radius: ${themeConfig.border.radius};
+    color: ${({ theme }) => theme.secondaryColor};
+
+    padding: ${themeConfig.spacing.small};
+    font-size: ${themeConfig.font.medium};
+  }
+
+  .Toastify__toast--success {
+    svg {
+      fill: ${({ theme }) => theme.primaryColor};
+    }
+
+    .Toastify__progress-bar {
+      background-color: ${({ theme }) => theme.primaryColor};
+    }
+  }
+
+  .Toastify__toast--error {
+    svg {
+      fill: ${({ theme }) => theme.errorColor};
+    }
+
+    .Toastify__progress-bar {
+      background-color: ${({ theme }) => theme.errorColor};
+    }
+  }
 `;

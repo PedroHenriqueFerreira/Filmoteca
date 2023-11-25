@@ -139,7 +139,7 @@ export const HeaderContainer = styled.header`
           padding-right: 0;
         }
 
-        img {
+        svg {
           width: ${themeConfig.image.extraSmall};
           height: ${themeConfig.image.extraSmall};
           border-radius: 50%;
@@ -147,14 +147,6 @@ export const HeaderContainer = styled.header`
           border-width: ${themeConfig.border.width};
           border-style: ${themeConfig.border.type};
           border-color: transparent;
-        }
-
-        :hover,
-        :focus-visible,
-        &.active {
-          img {
-            border-color: ${({ theme }) => theme.primaryColor};
-          }
         }
       }
     }

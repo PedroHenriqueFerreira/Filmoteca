@@ -55,11 +55,14 @@ export const MoviesContainer = styled.section`
     cursor: pointer;
     position: relative;
     margin: 0 ${themeConfig.spacing.extremeSmall};
+    height: 100%;
 
     img {
       transition: ${themeConfig.transition};
       border-radius: ${themeConfig.border.radius};
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     :hover {

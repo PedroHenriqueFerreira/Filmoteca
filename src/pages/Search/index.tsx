@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SearchContainer } from './styled';
 import { Input } from '../../components/Input';
@@ -9,6 +9,15 @@ import Title from '../../components/common/Title';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Link } from 'react-router-dom';
+import axios from '../../services/axios';
+import { get } from 'lodash';
+import { toast } from 'react-toastify';
+
+interface Movie {
+  id: number;
+  titulo: string;
+  poster: string;
+}
 
 const Search = () => {
   const responsive = {
@@ -46,6 +55,31 @@ const Search = () => {
     },
   };
 
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [search, setSearch] = useState('');
+
+  const [text, setText] = useState('');
+
+  const loadMovies = async () => {
+    try {
+      setText(search);
+
+      const result = await axios.get(`/filme/filtrar?titulo=${search}`);
+
+      const data = get(result, 'data', []);
+
+      setMovies(data['filmes']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      errors.map((error: string) => toast.error(error));
+    }
+  };
+
+  useEffect(() => {
+    loadMovies();
+  }, []);
+
   return (
     <SearchContainer>
       <span className="cover"></span>
@@ -53,64 +87,37 @@ const Search = () => {
       <div className="content">
         <Title>Pesquise por um filme</Title>
 
-        <form>
-          <Input />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            loadMovies();
+          }}
+        >
+          <Input value={search} setValue={setSearch} />
           <Button>Pesquisar filme</Button>
         </form>
 
-        <article>
-          <Title>Resultados para {'"Barbie"'}</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/2">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+        {movies.length > 0 && (
+          <article>
+            <Title>
+              Resultados para {'"'}
+              {text}
+              {'"'}
+            </Title>
+            <Carousel responsive={responsive}>
+              {movies.map((movie) => (
+                <Link
+                  className="movie"
+                  to={`/movie/${movie.id}`}
+                  key={movie.id}
+                >
+                  <img src={movie.poster} />
+                  <h3>{movie.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        )}
       </div>
     </SearchContainer>
   );

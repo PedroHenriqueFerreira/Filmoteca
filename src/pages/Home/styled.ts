@@ -51,16 +51,19 @@ export const HomeContainer = styled.section`
     position: relative;
     margin: 0 ${themeConfig.spacing.extremeSmall};
     display: block;
+    height: 100%;
 
     img {
       transition: ${themeConfig.transition};
       border-radius: ${themeConfig.border.radius};
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     :hover {
       img {
-        filter: brightness(80%);
+        filter: brightness(75%);
       }
 
       h3 {

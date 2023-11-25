@@ -10,4 +10,9 @@ export const ProfileContainer = styled.section`
   form > div:last-child {
     margin-bottom: 0;
   }
+
+  .logout {
+    margin-top: ${themeConfig.spacing.extraLarge};
+    margin-bottom: ${themeConfig.spacing.small};
+  }
 `;

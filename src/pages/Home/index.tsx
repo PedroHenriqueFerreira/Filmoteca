@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HomeContainer } from './styled';
 
@@ -8,6 +8,18 @@ import Title from '../../components/common/Title';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import axios from '../../services/axios';
+import { get } from 'lodash';
+
+interface Movie {
+  id: number;
+  titulo: string;
+  sinopse: string;
+  ano: number;
+  poster: string;
+  avaliacao: number;
+  genero: string;
+}
 
 const Home = () => {
   const responsive = {
@@ -45,225 +57,150 @@ const Home = () => {
     },
   };
 
+  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  const [recommendedMovies, setRecommendedMovies] = useState<Movie[]>([]);
+  const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
+  const [watchedMovies, setWatchedMovies] = useState<Movie[]>([]);
+
+  const loadRecommendedMovies = async () => {
+    try {
+      const result = await axios.get('/filme/recomendacoes');
+
+      const data = get(result, 'data', {});
+
+      setRecommendedMovies(data['filmes']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      setRecommendedMovies([]);
+    }
+  };
+
+  const loadPopularMovies = async () => {
+    try {
+      const result = await axios.get('/filme/populares');
+
+      const data = get(result, 'data', {});
+
+      setPopularMovies(data['filmes']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      setPopularMovies([]);
+    }
+  };
+
+  const loadFavoriteMovies = async () => {
+    try {
+      const result = await axios.get('/filme/favoritos');
+
+      const data = get(result, 'data', {});
+
+      setFavoriteMovies(data['filmes']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      setFavoriteMovies([]);
+    }
+  };
+
+  const loadWatchedMovies = async () => {
+    try {
+      const result = await axios.get('/filme/assistidos');
+
+      const data = get(result, 'data', {});
+
+      setWatchedMovies(data['filmes']);
+    } catch (e) {
+      const errors = get(e, 'response.data.errors', []);
+
+      setWatchedMovies([]);
+    }
+  };
+
+  useEffect(() => {
+    loadPopularMovies();
+    loadRecommendedMovies();
+    loadFavoriteMovies();
+    loadWatchedMovies();
+  }, []);
+
   return (
     <HomeContainer>
       <span className="cover"></span>
 
       <div className="content">
-        <article>
-          <Title>Recomendados</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
-        <article>
-          <Title>Populares</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+        {recommendedMovies.length > 0 && (
+          <article>
+            <Title>Recomendados</Title>
+            <Carousel responsive={responsive}>
+              {recommendedMovies.map((movie) => (
+                <Link
+                  key={movie.id}
+                  className="movie"
+                  to={`/movie/${movie.id}`}
+                >
+                  <img src={movie.poster} />
+                  <h3>{movie.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        )}
 
-        <article>
-          <Title>Favoritos</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+        {popularMovies.length > 0 && (
+          <article>
+            <Title>Populares</Title>
+            <Carousel responsive={responsive}>
+              {popularMovies.map((movie) => (
+                <Link
+                  key={movie.id}
+                  className="movie"
+                  to={`/movie/${movie.id}`}
+                >
+                  <img src={movie.poster} />
+                  <h3>{movie.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        )}
 
-        <article>
-          <Title>Assistidos</Title>
-          <Carousel responsive={responsive}>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os Mercenários 4</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>A morte te dá parabéns e bla bla bla bla bla bla bla</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-            <Link className="movie" to="/movie/3">
-              <img src="https://picsum.photos/200/298" />
-              <h3>Os incríveis (2023)</h3>
-            </Link>
-          </Carousel>
-        </article>
+        {favoriteMovies.length > 0 && (
+          <article>
+            <Title>Favoritos</Title>
+            <Carousel responsive={responsive}>
+              {favoriteMovies.map((movie) => (
+                <Link
+                  key={movie.id}
+                  className="movie"
+                  to={`/movie/${movie.id}`}
+                >
+                  <img src={movie.poster} />
+                  <h3>{movie.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        )}
+
+        {watchedMovies.length > 0 && (
+          <article>
+            <Title>Assistidos</Title>
+            <Carousel responsive={responsive}>
+              {watchedMovies.map((movie) => (
+                <Link
+                  key={movie.id}
+                  className="movie"
+                  to={`/movie/${movie.id}`}
+                >
+                  <img src={movie.poster} />
+                  <h3>{movie.titulo}</h3>
+                </Link>
+              ))}
+            </Carousel>
+          </article>
+        )}
       </div>
     </HomeContainer>
   );

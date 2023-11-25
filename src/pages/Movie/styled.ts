@@ -35,8 +35,8 @@ export const MovieContainer = styled.section`
 
   .movie {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-bottom: ${themeConfig.spacing.extraLarge};
 
     .line {
@@ -49,6 +49,7 @@ export const MovieContainer = styled.section`
 
     img {
       margin-right: ${themeConfig.spacing.large};
+      height: ${themeConfig.image.large};
     }
 
     p {
@@ -107,6 +108,7 @@ export const MovieContainer = styled.section`
 
     .comment {
       .row {
+        font-size: ${themeConfig.font.medium};
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -114,7 +116,16 @@ export const MovieContainer = styled.section`
         color: ${({ theme }) => theme.secondaryColor};
 
         .username {
-          font-weight: bold;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            width: ${themeConfig.icon.large};
+            height: ${themeConfig.icon.large};
+
+            margin-right: ${themeConfig.spacing.extraSmall};
+          }
         }
       }
 
